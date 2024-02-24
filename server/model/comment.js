@@ -6,6 +6,13 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    parentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "comments",
+    },
+    star: {
+      type: String,
+    },
   },
   {
     timestamps: true,

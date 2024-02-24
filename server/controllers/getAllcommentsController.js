@@ -2,7 +2,11 @@ import commentModel from "../model/comment.js";
 
 const getAllcommentsController = async (req, res) => {
   try {
-    const posts = await commentModel.find();
+    const posts = await commentModel
+      .find({
+        parentId: null,
+      })
+      .sort({ createdAt: -1 });
 
     return res.status(200).send({
       success: true,

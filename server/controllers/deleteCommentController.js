@@ -4,6 +4,9 @@ const deleteCommentController = async (req, res) => {
   try {
     const id = req.params.id;
     await commentModel.findByIdAndDelete(id);
+    await commentModel.deleteMany({
+      parentId: id,
+    });
 
     return res.status(200).send({
       success: true,

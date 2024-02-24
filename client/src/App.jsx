@@ -1,35 +1,72 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from "react";
+import Input from "./Input/Input";
+import axios from "axios";
+import CommentArea from "./pages/CommentArea";
+import HeaderInput from "./Input/HeaderInput";
+// import Input from "./Input/Input.jsx";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [posts, setPosts] = useState([]);
+  const [createPost, setCreatePost] = useState("");
+  const getAllposts = async () => {
+    await axios
+      .get("http://localhost:3001/")
+      .then((res) => {
+        console.log(res?.data?.posts);
+        setPosts(res?.data?.posts);
+      })
+      .catch((error) => console.log(error?.message));
+  };
+  const handleCreatePost = async () => {
+    try {
+      const p = await axios.post("http://localhost:3001/create-post", {
+        comment: createPost,
+      });
+      setCreatePost("");
+      alert(p?.data?.message);
+      location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllposts();
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="flex flex-col   shadow-2xl focus:shadow-outline justify-center text-center bg-slate-400 items-center gap-3  mt-10   rounded-lg border-red-700  max-w-[80%] m-auto">
+      <div className="text-6xl mb-7 w-[100%] mt-4 font-bold">
+        <h1>AulaCube</h1>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <div className="w-[100%]">
+        <div className="mb-8 gap-9 px-3 ">
+          <div className=" text-3xl mb-6 mx-10 text-left">
+            What's on your mind ?
+          </div>
+          <div className="flex flex-row gap-10 pl-10 pr-1 content-between items-center  w-[100%]">
+            <input
+              className=" placeholder-black w-full h-full bg-transparent text-blue-gray-700  font-[300]   transition-all outline  border-gray-500 focus:border-2   focus:border-blue-500  text-lg px-3 py-4 rounded-[7px] border-blue-gray-200"
+              placeholder="Create your post here...."
+              value={createPost}
+              onChange={(e) => setCreatePost(e.target.value)}
+              type="text"
+            />
 
-export default App
+            <button
+              onClick={handleCreatePost}
+              className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded"
+            >
+              Post
+            </button>
+          </div>
+        </div>
+        <div className="flex justify-start items-start">
+          <CommentArea posts={posts} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
