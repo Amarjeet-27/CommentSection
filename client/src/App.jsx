@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CommentArea from "./pages/CommentArea";
-import HeaderInput from "./Input/HeaderInput";
 // import Input from "./Input/Input.jsx";
 
 const App = () => {
@@ -9,7 +8,7 @@ const App = () => {
   const [createPost, setCreatePost] = useState("");
   const getAllposts = async () => {
     await axios
-      .get(`${process.env.REACT_BASE_URL}`)
+      .get("https://commentsection-aqfj.onrender.com")
       .then((res) => {
         console.log(res?.data?.posts);
         setPosts(res?.data?.posts);
@@ -18,9 +17,12 @@ const App = () => {
   };
   const handleCreatePost = async () => {
     try {
-      const p = await axios.post(`${process.env.REACT_BASE_URL}create-post`, {
-        comment: createPost,
-      });
+      const p = await axios.post(
+        `https://commentsection-aqfj.onrender.com/create-post`,
+        {
+          comment: createPost,
+        }
+      );
       setCreatePost("");
       alert(p?.data?.message);
       location.reload();

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Input from "../Input/Input";
 import axios from "axios";
 import CommentArea from "./CommentArea";
 
@@ -11,10 +10,13 @@ const SinglePost = ({ post }) => {
   const [showStar, setShowStar] = useState(post?.star);
   const handleReply = async (req, res) => {
     try {
-      const p = await axios.post(`${process.env.REACT_BASE_URL}create-post`, {
-        comment,
-        parentId: post._id,
-      });
+      const p = await axios.post(
+        `https://commentsection-aqfj.onrender.com/create-post`,
+        {
+          comment,
+          parentId: post._id,
+        }
+      );
       alert(p?.data?.message);
       location.reload();
     } catch (error) {
@@ -24,7 +26,7 @@ const SinglePost = ({ post }) => {
 
   const handleShowComments = async (id) => {
     await axios
-      .get(`${process.env.REACT_BASE_URL}${id} `)
+      .get(`https://commentsection-aqfj.onrender.com/${id} `)
       .then((res) => {
         console.log(res?.data?.comments);
         setNested(res?.data?.comments);
@@ -36,7 +38,9 @@ const SinglePost = ({ post }) => {
 
   const handleDelete = async (id) => {
     try {
-      const p = await axios.delete(`${process.env.REACT_BASE_URL}delete/${id}`);
+      const p = await axios.delete(
+        `https://commentsection-aqfj.onrender.com/delete/${id}`
+      );
       alert(p?.data?.message);
       location.reload();
     } catch (error) {
@@ -46,9 +50,12 @@ const SinglePost = ({ post }) => {
 
   const handleClick = async (id) => {
     try {
-      const res = await axios.post(`${process.env.REACT_BASE_URL}star/${id}`, {
-        star: !showStar,
-      });
+      const res = await axios.post(
+        `https://commentsection-aqfj.onrender.com/star/${id}`,
+        {
+          star: !showStar,
+        }
+      );
       alert(res?.data?.message);
       setShowStar(res?.data?.start);
       location.reload();
