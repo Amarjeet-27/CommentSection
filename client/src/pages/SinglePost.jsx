@@ -11,7 +11,7 @@ const SinglePost = ({ post }) => {
   const [showStar, setShowStar] = useState(post?.star);
   const handleReply = async (req, res) => {
     try {
-      const p = await axios.post("http://localhost:3001/create-post", {
+      const p = await axios.post(`${process.env.REACT_BASE_URL}create-post`, {
         comment,
         parentId: post._id,
       });
@@ -24,7 +24,7 @@ const SinglePost = ({ post }) => {
 
   const handleShowComments = async (id) => {
     await axios
-      .get(`http://localhost:3001/${id} `)
+      .get(`${process.env.REACT_BASE_URL}${id} `)
       .then((res) => {
         console.log(res?.data?.comments);
         setNested(res?.data?.comments);
@@ -36,7 +36,7 @@ const SinglePost = ({ post }) => {
 
   const handleDelete = async (id) => {
     try {
-      const p = await axios.delete(`http://localhost:3001/delete/${id}`);
+      const p = await axios.delete(`${process.env.REACT_BASE_URL}delete/${id}`);
       alert(p?.data?.message);
       location.reload();
     } catch (error) {
@@ -46,7 +46,7 @@ const SinglePost = ({ post }) => {
 
   const handleClick = async (id) => {
     try {
-      const res = await axios.post(`http://localhost:3001/star/${id}`, {
+      const res = await axios.post(`${process.env.REACT_BASE_URL}star/${id}`, {
         star: !showStar,
       });
       alert(res?.data?.message);

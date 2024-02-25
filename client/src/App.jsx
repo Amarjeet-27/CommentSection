@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Input from "./Input/Input";
 import axios from "axios";
 import CommentArea from "./pages/CommentArea";
 import HeaderInput from "./Input/HeaderInput";
@@ -10,7 +9,7 @@ const App = () => {
   const [createPost, setCreatePost] = useState("");
   const getAllposts = async () => {
     await axios
-      .get("http://localhost:3001/")
+      .get(`${process.env.REACT_BASE_URL}`)
       .then((res) => {
         console.log(res?.data?.posts);
         setPosts(res?.data?.posts);
@@ -19,7 +18,7 @@ const App = () => {
   };
   const handleCreatePost = async () => {
     try {
-      const p = await axios.post("http://localhost:3001/create-post", {
+      const p = await axios.post(`${process.env.REACT_BASE_URL}create-post`, {
         comment: createPost,
       });
       setCreatePost("");
