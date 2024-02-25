@@ -11,7 +11,8 @@ const commentSchema = new mongoose.Schema(
       ref: "comments",
     },
     star: {
-      type: String,
+      type: Boolean,
+      default: false,
     },
   },
   {

@@ -7,7 +7,7 @@ const starController = async (req, res) => {
 
     return res.status(200).send({
       success: true,
-      message: "Star it  successfully",
+      message: "Star commented  successfully",
     });
   } catch (error) {
     console.log(error);
